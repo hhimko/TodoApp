@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace TodoAppAPI.DataAccess.JsonConverters;
+namespace TodoAppLib.JsonConverters;
 
 
 public class DateOnlyJsonConverter : JsonConverter<DateOnly>

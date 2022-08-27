@@ -1,2 +1,2 @@
 ﻿global using TodoAppAPI.DataAccess;
-global using TodoAppAPI.Models;
+global using TodoAppLib.Models;

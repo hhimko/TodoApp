@@ -5,4 +5,5 @@ public interface IDbContext
 {
     public TodoItem? GetById(long id);
     public IEnumerable<TodoItem> GetAllByDayNumber(int dayNumber);
+    public bool Delete(long id);
 }
