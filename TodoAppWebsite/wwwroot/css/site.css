@@ -1,3 +1,13 @@
+:root {
+    --col-bg-darkest: #121616;
+    --col-bg-dark: #1E2121;
+    --col-bg-light: #323535;
+    --col-txt-white: #FFFFFF;
+    --col-txt-gray: #C9C9C9;
+    --col-blue: #286C77;
+}
+
+
 html {
   font-size: 14px;
 }
@@ -14,5 +24,80 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 100;
+    margin-bottom: 60px;
+    background-color: var(--col-bg-light);
+    color: white;
+}
+
+.todolist-container {
+    display: block;
+    width: 600px;
+}
+
+.todolist {
+    list-style-type: none;
+    padding-left: 0;
+    overflow: hidden;
+}
+
+.todolist li {
+    position: relative;
+    background-color: var(--col-bg-dark);
+    border-radius: 15px;
+    overflow: hidden;
+    height: 60px;
+}
+
+.todolist li:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.todoitem-left {
+    display: inline-block;
+    vertical-align: top;
+    width: 10px;
+    height: 100%;
+    background-color: var(--col-blue);
+    margin-right: 15px;
+    transition-duration: 0.3s;
+}
+
+.todolist li:hover .todoitem-left {
+    width: 60px;
+}
+
+.todoitem-right {
+    position: absolute;
+    display: inline;
+    vertical-align: top;
+}
+
+.todoitem-name {
+    color: var(--col-txt-white);
+    font-size: 20px;
+    font-weight: 400;
+    margin-top: 5px;
+    margin-bottom: -3px;
+}
+
+.todoitem-info {
+    color: var(--col-txt-gray);
+    font-size: 14px;
+    margin: 0;
+}
+
+.todoitem-tag {
+    display: inline-flex;
+    font-size: 12px;
+    background: var(--col-bg-darkest);
+    color: var(--col-txt-white);
+    padding: 1px 12px;
+    border-radius: 6px;
+    margin-left: 2px;
+}
+
+.todoitem-tag:first-child {
+    margin-left: 12px;
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
+using TodoAppWebsite.ViewComponents;
+
 namespace TodoAppWebsite.Controllers;
 
 
@@ -16,22 +18,14 @@ public class TodoController : Controller
         _logger = logger;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
-        IEnumerable<TodoItem> todoItems = Enumerable.Empty<TodoItem>();
+        return View();
+    }
 
-        var client = _httpClient.CreateClient("Todo");
-        var request = new HttpRequestMessage(HttpMethod.Get, "api/todo/today");
-
-        var response = await client.SendAsync(request);
-        if (response.IsSuccessStatusCode)
-        {
-            var result = await response.Content.ReadFromJsonAsync<IEnumerable<TodoItem>>();
-            if (result is not null)
-                todoItems = result;
-        }
-
-        return View(new TodoViewModel() { TodoItems = todoItems.ToList() });
+    public IActionResult TodoListVC()
+    {
+        return ViewComponent(typeof(TodoListViewComponent));
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

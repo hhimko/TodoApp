@@ -5,7 +5,7 @@ public class TestingDbContext : IDbContext
 {
     private List<TodoItem> todoItems = new() { 
         new(0, "Foo", DateTime.Today),
-        new(1, "Bar", DateTime.Today),
+        new(1, "Bar", DateTime.Today, done: true),
         new(2, "Baz", DateTime.Today, scheduledTime: new TimeOnly(18, 00))
     };
 

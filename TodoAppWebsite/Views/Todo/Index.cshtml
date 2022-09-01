@@ -1,10 +1,29 @@
-﻿@model TodoViewModel
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
 
-@{
-    ViewData["Title"] = "Home Page";
+@functions{
+    void TodoItemTemplate(TodoItem todo){
+        <div>
+            <span>
+                @using (Html.BeginForm(FormMethod.Post))
+                {
+                    <input type="checkbox" name="checkedState" checked=@TempData["c"] onChange="this.form.submit()" />
+                }
+            </span>
+
+            <span> 
+                @todo.Name
+            </span>
+        </div>
+    }
 }
 
 
-@for (int i = 0; i < Model.TodoItems.Count; i++){
-    <p> Todo @i: @Model.TodoItems[i].Name </p>
-}
+<h1> Todo Items </h1>
+
+<span class="todolist-container">
+    @await Component.InvokeAsync("TodoList")
+</span>
+
+<p>some text</p>
