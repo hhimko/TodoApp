@@ -13,8 +13,6 @@
 
         return null;
     }
-
-
 }
 
 <ul class="todolist">
@@ -22,7 +20,7 @@
     {
         <li @(todo.Done ? "class=done" : "") > 
             <div class="todoitem-left"> 
-
+                <button class="todoitem-btn-done" id="@todo.Id"></button>
             </div>
             <div class="todoitem-right">
                 <div class="todoitem-name">

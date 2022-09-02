@@ -23,6 +23,27 @@ public class TodoController : Controller
         return View();
     }
 
+    [HttpPost]
+    public async Task<bool?> ChangeDoneStateAjax(int? id)
+    {
+        if (id is null)
+            return null;
+
+        TodoItem? todoItem = null;
+
+        var client = _httpClient.CreateClient("Todo");
+        var request = new HttpRequestMessage(HttpMethod.Get, $"api/todo/item/{id}");
+
+        var response = await client.SendAsync(request);
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<TodoItem>();
+            if (result is not null)
+                todoItem = result;
+        }
+        return todoItem?.Done;
+    }
+
     public IActionResult TodoListVC()
     {
         return ViewComponent(typeof(TodoListViewComponent));

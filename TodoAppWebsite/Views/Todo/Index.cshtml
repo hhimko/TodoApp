@@ -2,28 +2,30 @@
     ViewData["Title"] = "Dashboard";
 }
 
-@functions{
-    void TodoItemTemplate(TodoItem todo){
-        <div>
-            <span>
-                @using (Html.BeginForm(FormMethod.Post))
-                {
-                    <input type="checkbox" name="checkedState" checked=@TempData["c"] onChange="this.form.submit()" />
-                }
-            </span>
-
-            <span> 
-                @todo.Name
-            </span>
-        </div>
-    }
-}
-
-
-<h1> Todo Items </h1>
-
-<span class="todolist-container">
+<div class="todolist-container">
+    <div class="todolist-title"> 
+        todo 
+    </div>
     @await Component.InvokeAsync("TodoList")
-</span>
+</div>
 
-<p>some text</p>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(() => {
+            $('.todoitem-btn-done').click((e) => {
+                var id = $(e.target).attr('id')
+
+                $.ajax({
+                    url: '@Url.Action("ChangeDoneStateAjax")',
+                    data: {
+                        id: id
+                    },
+                    type: 'POST'
+                }).then((result) => {
+                    window.alert(result)
+                })
+            })
+        })
+    </script>
+}
