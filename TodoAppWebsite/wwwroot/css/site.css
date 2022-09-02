@@ -2,6 +2,10 @@
     --col-bg-darkest: #121616;
     --col-bg-dark: #1E2121;
     --col-bg-light: #323535;
+    --col-done-dark: #2A2D2D;
+    --col-done-light: #525454;
+    --col-done-txt-dark: #777777;
+    --col-done-txt-light: #919191;
     --col-txt-white: #FFFFFF;
     --col-txt-gray: #C9C9C9;
     --col-blue: #286C77;
@@ -54,18 +58,27 @@ body {
     margin-bottom: 10px;
 }
 
+.todolist li.done {
+    background-color: var(--col-done-dark);
+}
+
 .todoitem-left {
     display: inline-block;
     vertical-align: top;
     width: 10px;
     height: 100%;
     background-color: var(--col-blue);
-    margin-right: 15px;
+    margin-right: 20px;
     transition-duration: 0.3s;
+}
+
+.done .todoitem-left {
+    background-color: var(--col-done-light);
 }
 
 .todolist li:hover .todoitem-left {
     width: 60px;
+    border-radius: 15px;
 }
 
 .todoitem-right {
@@ -82,10 +95,18 @@ body {
     margin-bottom: -3px;
 }
 
+.done .todoitem-name {
+    color: var(--col-done-txt-light);
+}
+
 .todoitem-info {
     color: var(--col-txt-gray);
     font-size: 14px;
     margin: 0;
+}
+
+.done .todoitem-info {
+    color: var(--col-done-txt-dark);
 }
 
 .todoitem-tag {

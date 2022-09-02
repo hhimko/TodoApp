@@ -1,18 +1,26 @@
 ﻿@model IEnumerable<TodoItem>
 
 @{
-    string GetScheduledTimeString(TodoItem todo) => 
-        todo.ScheduledTime?.ToString("HH:mm") ?? "unsheduled";
+    StringHtmlContent RenderScheduledTimeString(TodoItem todo) => 
+        new(todo.ScheduledTime?.ToString("HH:mm") ?? "unsheduled");
 
-    void AddItemTag(string innerHtml) {
-        <span class="todoitem-tag"> @innerHtml </span>
+
+    object? RenderItemTagIfTrue(string innerHtml, bool flag)
+    {
+        if (flag){
+            <span class="todoitem-tag"> @innerHtml </span>
+        } 
+
+        return null;
     }
+
+
 }
 
 <ul class="todolist">
     @foreach (TodoItem todo in Model)
     {
-        <li> 
+        <li @(todo.Done ? "class=done" : "") > 
             <div class="todoitem-left"> 
 
             </div>
@@ -20,11 +28,9 @@
                 <div class="todoitem-name">
                     @todo.Name
                 </div>
-                <div class ="todoitem-info">
-                    @GetScheduledTimeString(todo)
-
-                    @if (todo.Done) AddItemTag("done");
-
+                <div class="todoitem-info">
+                    @RenderScheduledTimeString(todo)
+                    @RenderItemTagIfTrue("done", todo.Done)
                 </div>
             </div>
         </li>
