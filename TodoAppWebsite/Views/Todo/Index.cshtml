@@ -6,26 +6,37 @@
     <div class="todolist-title"> 
         todo 
     </div>
-    @await Component.InvokeAsync("TodoList")
+    <div id="todolist-partial">
+
+    </div>
 </div>
 
 
 @section Scripts{
     <script type="text/javascript">
-        $(document).ready(() => {
-            $('.todoitem-btn-done').click((e) => {
-                var id = $(e.target).attr('id')
-
-                $.ajax({
-                    url: '@Url.Action("ChangeDoneStateAjax")',
-                    data: {
-                        id: id
-                    },
-                    type: 'POST'
-                }).then((result) => {
-                    window.alert(result)
-                })
+        loadTodoList = () => {
+            $.ajax({
+                url: '@Url.Action("TodoListPartial")',
+                type: 'POST'
+            }).done((data) => {
+                $('#todolist-partial').html(data)
+            }).fail((e) => {
+                $('#todolist-partial').html(e.status + ': ' + e.responseText)
             })
-        })
+        }
+
+        handleBtnDoneClick = (elem) => {
+            var id = $(elem).attr('id')
+
+            $.ajax({
+                url: '@Url.Action("ChangeDoneStateAjax")',
+                data: {
+                    id: id
+                },
+                type: 'POST'
+            }).done(loadTodoList)
+        }
+
+        $(document).ready(loadTodoList)
     </script>
 }

@@ -14,7 +14,6 @@ public record TodoItem
     [Required]
     public string Name { get; init; }
 
-    [JsonIgnore]
     public int DayNumber { get; init; }
 
     public bool Done { get; init; } = false;

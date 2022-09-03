@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Diagnostics;
-
-using TodoAppWebsite.ViewComponents;
+using System.Text.Json;
 
 namespace TodoAppWebsite.Controllers;
 
@@ -24,29 +24,43 @@ public class TodoController : Controller
     }
 
     [HttpPost]
-    public async Task<bool?> ChangeDoneStateAjax(int? id)
+    public async Task<IActionResult> TodoListPartial()
     {
-        if (id is null)
-            return null;
-
-        TodoItem? todoItem = null;
-
         var client = _httpClient.CreateClient("Todo");
-        var request = new HttpRequestMessage(HttpMethod.Get, $"api/todo/item/{id}");
+        var request = new HttpRequestMessage(HttpMethod.Get, "api/todo/today");
 
         var response = await client.SendAsync(request);
-        if (response.IsSuccessStatusCode)
+        if (!response.IsSuccessStatusCode)
+            return StatusCode(StatusCodes.Status500InternalServerError, "Connecion to API failed");
+
+        IEnumerable<TodoItem>? result;
+        try
         {
-            var result = await response.Content.ReadFromJsonAsync<TodoItem>();
-            if (result is not null)
-                todoItem = result;
+            result = await response.Content.ReadFromJsonAsync<IEnumerable<TodoItem>>();
+        } 
+        catch (JsonException e)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
         }
-        return todoItem?.Done;
+
+        return PartialView("_TodoListPartial", result ?? Enumerable.Empty<TodoItem>());
     }
 
-    public IActionResult TodoListVC()
+    [HttpPost]
+    public async Task<bool> ChangeDoneStateAjax(int? id)
     {
-        return ViewComponent(typeof(TodoListViewComponent));
+        if (id is null)
+            return false;
+
+        var client = _httpClient.CreateClient("Todo");
+        TodoItem? item = await client.GetFromJsonAsync<TodoItem>($"api/todo/item/{id}");
+        if (item is null)
+            return false;
+
+        TodoItem updated = new(item.Id, item.Name, item.DayNumber, !item.Done, item.ScheduledTime);
+        var response = await client.PutAsJsonAsync<TodoItem>($"api/todo/item/{id}", updated);
+
+        return response.IsSuccessStatusCode;
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

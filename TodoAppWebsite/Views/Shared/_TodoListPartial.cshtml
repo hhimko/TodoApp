@@ -8,7 +8,7 @@
     object? RenderItemTagIfTrue(string innerHtml, bool flag)
     {
         if (flag){
-            <span class="todoitem-tag"> @innerHtml </span>
+    <span class="todoitem-tag"> @innerHtml </span>
         } 
 
         return null;
@@ -19,8 +19,8 @@
     @foreach (TodoItem todo in Model)
     {
         <li @(todo.Done ? "class=done" : "") > 
-            <div class="todoitem-left"> 
-                <button class="todoitem-btn-done" id="@todo.Id"></button>
+            <div class="todoitem-left">
+                <button class="todoitem-btn-done" id="@todo.Id" onclick="handleBtnDoneClick(this)"></button>
             </div>
             <div class="todoitem-right">
                 <div class="todoitem-name">
