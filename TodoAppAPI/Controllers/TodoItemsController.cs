@@ -17,7 +17,7 @@ public class TodoItemsController : ControllerBase
     }
 
     [HttpGet("item/{id:long}", Name = "GetItemById")]
-    public ActionResult Get([FromRoute] long id)
+    public ActionResult<TodoItem> Get([FromRoute] long id)
     {
         TodoItem? todo = _context.GetById(id);
         return todo is not null ? Ok(todo) : NotFound();
@@ -34,5 +34,21 @@ public class TodoItemsController : ControllerBase
     {
         var daynum = DateOnly.FromDateTime(DateTime.Now).DayNumber;
         return RedirectToRoute("GetAllByDayNumber", new { dayNumber = daynum });
+    }
+
+    [HttpPut("item/{id:long}", Name = "PutItemById")]
+    public ActionResult<TodoItem> Put([FromRoute] long id, [FromBody]TodoItem item)
+    {
+        if (id != item.Id)
+            return BadRequest("Route and request body id mishmash");
+
+        TodoItem? todo = _context.Update(item);
+        return todo is not null ? Ok(todo) : NotFound();
+    }
+
+    [HttpDelete("item/{id:long}", Name = "DeleteItemById")]
+    public ActionResult Delete([FromRoute] long id)
+    {
+        return _context.Delete(id) ? NoContent() : NotFound();
     }
 }

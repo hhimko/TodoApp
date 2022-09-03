@@ -19,6 +19,17 @@ public class TestingDbContext : IDbContext
         return todoItems.Where(x => x.DayNumber == dayNumber);
     }
 
+    public TodoItem? Update(TodoItem update)
+    {
+        int idx = todoItems.FindIndex(x => x.Id == update.Id);
+
+        if (idx == -1)
+            return null;
+
+        todoItems[idx] = update;
+        return update;
+    }
+
     public bool Delete(long id)
     {
         TodoItem? item = GetById(id);

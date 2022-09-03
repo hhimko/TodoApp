@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using TodoAppLib.JsonConverters;
 
 namespace TodoAppLib.Models;
@@ -6,8 +7,11 @@ namespace TodoAppLib.Models;
 
 public record TodoItem
 {
-    public long Id { get; init; }
+    [Key]
+    [Required]
+    public long? Id { get; init; }
 
+    [Required]
     public string Name { get; init; }
 
     [JsonIgnore]
@@ -23,7 +27,7 @@ public record TodoItem
 
 
     [JsonConstructorAttribute]
-    public TodoItem(long id, string name, int dayNumber, bool done = false, TimeOnly? scheduledTime = null)
+    public TodoItem(long? id, string name, int dayNumber, bool done = false, TimeOnly? scheduledTime = null)
     {
         Id = id;
         Name = name;
@@ -32,9 +36,9 @@ public record TodoItem
         ScheduledTime = scheduledTime;
     }
 
-    public TodoItem(long id, string name, DateOnly dateOnly, bool done = false, TimeOnly? scheduledTime = null)
+    public TodoItem(long? id, string name, DateOnly dateOnly, bool done = false, TimeOnly? scheduledTime = null)
         : this(id, name, dateOnly.DayNumber, done, scheduledTime) { }
 
-    public TodoItem(long id, string name, DateTime dateTime, bool done = false, TimeOnly? scheduledTime = null)
+    public TodoItem(long? id, string name, DateTime dateTime, bool done = false, TimeOnly? scheduledTime = null)
         : this(id, name, DateOnly.FromDateTime(dateTime).DayNumber, done, scheduledTime) { }
 }
