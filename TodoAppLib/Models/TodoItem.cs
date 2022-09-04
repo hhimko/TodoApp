@@ -8,11 +8,10 @@ namespace TodoAppLib.Models;
 public record TodoItem
 {
     [Key]
-    [Required]
     public long? Id { get; init; }
 
     [Required]
-    public string Name { get; init; }
+    public string Description { get; init; } = default!;
 
     public int DayNumber { get; init; }
 
@@ -24,20 +23,21 @@ public record TodoItem
     [JsonConverter(typeof(DateOnlyJsonConverter))]
     public DateOnly Date => DateOnly.FromDayNumber(DayNumber);
 
-
     [JsonConstructorAttribute]
-    public TodoItem(long? id, string name, int dayNumber, bool done = false, TimeOnly? scheduledTime = null)
+    public TodoItem() { }
+
+    public TodoItem(long? id, string description, int dayNumber, bool done = false, TimeOnly? scheduledTime = null)
     {
         Id = id;
-        Name = name;
+        Description = description;
         DayNumber = dayNumber;
         Done = done;
         ScheduledTime = scheduledTime;
     }
 
-    public TodoItem(long? id, string name, DateOnly dateOnly, bool done = false, TimeOnly? scheduledTime = null)
-        : this(id, name, dateOnly.DayNumber, done, scheduledTime) { }
+    public TodoItem(long? id, string description, DateOnly dateOnly, bool done = false, TimeOnly? scheduledTime = null)
+        : this(id, description, dateOnly.DayNumber, done, scheduledTime) { }
 
-    public TodoItem(long? id, string name, DateTime dateTime, bool done = false, TimeOnly? scheduledTime = null)
-        : this(id, name, DateOnly.FromDateTime(dateTime).DayNumber, done, scheduledTime) { }
+    public TodoItem(long? id, string description, DateTime dateTime, bool done = false, TimeOnly? scheduledTime = null)
+        : this(id, description, DateOnly.FromDateTime(dateTime).DayNumber, done, scheduledTime) { }
 }

@@ -19,6 +19,16 @@ public class TestingDbContext : IDbContext
         return todoItems.Where(x => x.DayNumber == dayNumber);
     }
 
+    public TodoItem Insert(TodoItem item)
+    {
+        long id = todoItems.Max(x => x.Id) + 1 ?? 0;
+
+        TodoItem insert = new(id, item.Description, item.DayNumber, item.Done, item.ScheduledTime);
+        todoItems.Add(insert);
+
+        return insert;
+    }
+
     public TodoItem? Update(TodoItem update)
     {
         int idx = todoItems.FindIndex(x => x.Id == update.Id);

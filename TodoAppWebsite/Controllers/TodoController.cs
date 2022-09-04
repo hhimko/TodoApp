@@ -6,6 +6,7 @@ using System.Text.Json;
 namespace TodoAppWebsite.Controllers;
 
 
+[Controller]
 public class TodoController : Controller
 {
     private readonly IHttpClientFactory _httpClient;
@@ -24,12 +25,26 @@ public class TodoController : Controller
     }
 
     [HttpPost]
+    public async Task<IActionResult?> Index(TodoItem item)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var client = _httpClient.CreateClient("Todo");
+
+        var response = await client.PostAsJsonAsync("api/todo/item", item);
+        if (!response.IsSuccessStatusCode)
+            return StatusCode(StatusCodes.Status500InternalServerError, "Connecion to API failed");
+
+        return NoContent();
+    }
+
+    [HttpPost]
     public async Task<IActionResult> TodoListPartial()
     {
         var client = _httpClient.CreateClient("Todo");
-        var request = new HttpRequestMessage(HttpMethod.Get, "api/todo/today");
 
-        var response = await client.SendAsync(request);
+        var response = await client.GetAsync("api/todo/today");
         if (!response.IsSuccessStatusCode)
             return StatusCode(StatusCodes.Status500InternalServerError, "Connecion to API failed");
 
@@ -57,8 +72,8 @@ public class TodoController : Controller
         if (item is null)
             return false;
 
-        TodoItem updated = new(item.Id, item.Name, item.DayNumber, !item.Done, item.ScheduledTime);
-        var response = await client.PutAsJsonAsync<TodoItem>($"api/todo/item/{id}", updated);
+        TodoItem updated = new(item.Id, item.Description, item.DayNumber, !item.Done, item.ScheduledTime);
+        var response = await client.PutAsJsonAsync($"api/todo/item/{id}", updated);
 
         return response.IsSuccessStatusCode;
     }

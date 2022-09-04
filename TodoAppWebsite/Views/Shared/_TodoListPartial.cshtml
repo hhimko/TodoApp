@@ -23,8 +23,8 @@
                 <button class="todoitem-btn-done" id="@todo.Id" onclick="handleBtnDoneClick(this)"></button>
             </div>
             <div class="todoitem-right">
-                <div class="todoitem-name">
-                    @todo.Name
+                <div class="todoitem-desc">
+                    @todo.Description
                 </div>
                 <div class="todoitem-info">
                     @RenderScheduledTimeString(todo)

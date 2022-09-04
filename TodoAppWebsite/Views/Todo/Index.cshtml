@@ -1,13 +1,28 @@
-﻿@{
+﻿@model TodoItem
+
+@{
     ViewData["Title"] = "Dashboard";
 }
 
-<div class="todolist-container">
-    <div class="todolist-title"> 
-        todo 
-    </div>
-    <div id="todolist-partial">
+<div id="section-todo">
+    <div id="todolist-container" class="dashboard-item">
+        <div class="todolist-title"> 
+            todo 
+        </div>
+        <div id="todolist-partial">
 
+        </div>
+    </div>
+
+    <div id="todoadd-container" class="dashboard-item">
+        <form action="/" id="todoadd-form">
+            <input id="desc-input" placeholder="add a new todo"/>
+            <button id="btn-submit" type="submit">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                </svg>
+            </button>
+        </form>
     </div>
 </div>
 
@@ -37,6 +52,28 @@
             }).done(loadTodoList)
         }
 
-        $(document).ready(loadTodoList)
+        handleFormSubmit = (e) => {
+            e.preventDefault()
+            var input = $('#desc-input')
+
+            $.ajax({
+                url: '/',
+                type: 'POST',
+                data: {
+                    Description: input.val(),
+                    DayNumber: @DateOnly.FromDateTime(DateTime.Now).DayNumber
+                }
+            }).done((e) => {
+                loadTodoList()
+                input.val('')
+            }).fail((e) => {
+                window.alert('submit fail')
+            })
+        }
+
+        $(document).ready(() => {
+            $('#todoadd-form').submit((e) => handleFormSubmit(e))
+            loadTodoList()
+        })
     </script>
 }

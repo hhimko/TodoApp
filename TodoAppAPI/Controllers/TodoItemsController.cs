@@ -36,8 +36,16 @@ public class TodoItemsController : ControllerBase
         return RedirectToRoute("GetAllByDayNumber", new { dayNumber = daynum });
     }
 
+    [HttpPost("item", Name = "PostItem")]
+    public ActionResult<TodoItem> Post(TodoItem item)
+    {
+        TodoItem todo = _context.Insert(item);
+
+        return Ok(todo);
+    }
+
     [HttpPut("item/{id:long}", Name = "PutItemById")]
-    public ActionResult<TodoItem> Put([FromRoute] long id, [FromBody]TodoItem item)
+    public ActionResult<TodoItem> Put([FromRoute] long id, [FromBody] TodoItem item)
     {
         if (id != item.Id)
             return BadRequest("Route and request body id mishmash");
