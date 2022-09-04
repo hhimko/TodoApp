@@ -11,6 +11,7 @@
     --col-txt-gray: #C9C9C9;
     --col-purple: #9B3786;
     --col-blue: #286C77;
+    --col-blue-hover: #26777F;
 }
 
 
@@ -182,7 +183,18 @@ body {
     bottom: -25px;
     width: 55px;
     height: 55px;
-    color: white;
+    color: var(--col-txt-gray);
+    transition-duration: 0.5s;
+}
+
+#btn-submit:hover {
+    background-color: var(--col-blue-hover);
+    color: var(--col-txt-white);
+    transform: scale(115%) rotate(180deg);
+}
+
+#btn-submit.animate{
+    animation: btnSubmitClickAnim 0.2s ease 1;
 }
 
 #popup-add-container {
@@ -200,4 +212,18 @@ body {
     z-index: -1;
     transform: translateY(-25px);
     font-weight: 400;
+}
+
+@keyframes btnSubmitClickAnim {
+    0% {
+        transform: scale(80%);
+    }
+
+    70% {
+        transform: scale(120%);
+    }
+
+    100% {
+        transform: scale(115%);
+    }
 }

@@ -16,7 +16,7 @@
         <div id="todoadd-container" class="dashboard-item">
             <form action="/" id="todoadd-form" autocomplete="off">
                 <input id="desc-input" placeholder="add a new todo"/>
-                <button id="btn-submit" type="submit">
+                <button id="btn-submit" type="submit" onclick="handleBtnSubmitClick(this)">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
                     </svg>
@@ -69,6 +69,11 @@
             }).done(loadTodoList)
         }
 
+        handleBtnSubmitClick = (elem) => {
+            $(elem).removeClass('animate')
+            setTimeout(() => {$(elem).addClass('animate')}, 1 )
+        }
+
         handleFormSubmit = (e) => {
             e.preventDefault()
             var input = $('#desc-input')
@@ -85,13 +90,13 @@
                 input.val('')
                 displayPopupMsg('new todo added')
             }).fail((e) => {
-                console.log(e)
                 displayPopupMsg(Object.values(e.responseJSON))
             })
         }
 
         $(document).ready(() => {
             $('#todoadd-form').submit((e) => handleFormSubmit(e))
+
             loadTodoList()
         })
     </script>
