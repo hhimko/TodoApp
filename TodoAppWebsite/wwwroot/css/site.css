@@ -9,6 +9,7 @@
     --col-done-txt-light: #919191;
     --col-txt-white: #FFFFFF;
     --col-txt-gray: #C9C9C9;
+    --col-purple: #9B3786;
     --col-blue: #286C77;
 }
 
@@ -164,6 +165,7 @@ body {
     border: none !important;
     border-radius: 15px;
     width: 100%;
+    outline: none;
 }
 
 #todoadd-container form {
@@ -181,4 +183,21 @@ body {
     width: 55px;
     height: 55px;
     color: white;
+}
+
+#popup-add-container {
+    position: relative;
+}
+
+#todopopup {
+    display: none;
+    position: absolute;
+    background-color: var(--col-purple);
+    width: 100%;
+    padding: 35px 40px 10px;
+    border-radius: 15px;
+    text-align: center;
+    z-index: -1;
+    transform: translateY(-25px);
+    font-weight: 400;
 }

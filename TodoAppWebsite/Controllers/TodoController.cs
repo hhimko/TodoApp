@@ -25,7 +25,7 @@ public class TodoController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult?> Index(TodoItem item)
+    public async Task<IActionResult> Index(TodoItem item)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
