@@ -27,7 +27,6 @@ html {
 
 html {
   position: relative;
-  min-height: 100%;
 }
 
 body {
@@ -38,15 +37,22 @@ body {
     color: white;
 }
 
-#section-todo {
-    width: 600px;
+#dashboard-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
 }
 
 .dashboard-item {
-    display: block;
     padding: 15px 25px;
     background-color: var(--col-bg-light);
     border-radius: 15px;
+}
+
+#section-todo {
+    width: 600px;
 }
 
 #todolist-container {
@@ -56,7 +62,7 @@ body {
 
 .todolist-title {
     color: var(--col-txt-white);
-    font-size: 38px;
+    font-size: 2.5rem;
     font-weight: 100;
     padding-bottom: 5px;
 }
@@ -68,11 +74,12 @@ body {
 }
 
 .todolist li {
-    position: relative;
-    background-color: var(--col-bg-dark);
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    grid-column-gap: 15px;
     border-radius: 15px;
     overflow: hidden;
-    height: 60px;
+    background-color: var(--col-bg-dark);
 }
 
 .todolist li:not(:last-child) {
@@ -84,15 +91,10 @@ body {
 }
 
 .todoitem-left {
-    position: relative;
-    display: inline-block;
-    vertical-align: top;
     width: 10px;
-    height: 100%;
     background-color: var(--col-blue);
-    margin-right: 20px;
-    transition-duration: 0.3s;
     overflow: hidden;
+    transition-duration: 0.3s;
 }
 
 .done .todoitem-left {
@@ -105,7 +107,6 @@ body {
 }
 
 .todoitem-btn-done {
-    position: absolute;
     width: 100%;
     height: 100%;
     background: transparent;
@@ -113,17 +114,15 @@ body {
 }
 
 .todoitem-right {
-    position: absolute;
-    display: inline;
-    vertical-align: top;
+    padding: 6px 0;
 }
 
 .todoitem-desc {
+    overflow-wrap: break-word;
     color: var(--col-txt-white);
-    font-size: 20px;
+    font-size: 1.2rem;
+    line-height: 1em;
     font-weight: 400;
-    margin-top: 5px;
-    margin-bottom: -3px;
 }
 
 .done .todoitem-desc {
@@ -132,7 +131,7 @@ body {
 
 .todoitem-info {
     color: var(--col-txt-gray);
-    font-size: 14px;
+    font-size: 1rem;
     margin: 0;
 }
 
@@ -141,8 +140,7 @@ body {
 }
 
 .todoitem-tag {
-    display: inline-flex;
-    font-size: 12px;
+    font-size: 0.8rem;
     background: var(--col-bg-darkest);
     color: var(--col-txt-white);
     padding: 1px 12px;
@@ -151,12 +149,11 @@ body {
 }
 
 .todoitem-tag:first-child {
-    margin-left: 12px;
+    margin-left: 15px;
 }
 
 #todoadd-container {
     margin-top: 25px;
-    padding-top: 15px;
 }
 
 #desc-input {
@@ -174,11 +171,10 @@ body {
 }
 
 #btn-submit {
-    display: block;
     position: absolute;
     background-color: var(--col-blue);
     border: none !important;
-    border-radius: 100px;
+    border-radius: 50%;
     right: -35px;
     bottom: -25px;
     width: 55px;
