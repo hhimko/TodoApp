@@ -56,7 +56,7 @@ public class TodoController : Controller
         var model = await todoClient.GetAsyncFromAPI<IEnumerable<TodoItem>>("api/todo/today");
 
         ViewBag.HoveredTodoId = hoveredTodoId;
-        return PartialView("_SchedulePartial", model ?? Enumerable.Empty<TodoItem>());
+        return PartialView("_SchedulePartial", new ScheduleViewModel(model ?? Enumerable.Empty<TodoItem>()));
     }
 
     [HttpPost]

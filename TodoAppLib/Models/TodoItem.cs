@@ -5,7 +5,7 @@ using TodoAppLib.JsonConverters;
 namespace TodoAppLib.Models;
 
 
-public record TodoItem
+public record TodoItem : IScheduledItem
 {
     [Key]
     public long? Id { get; init; }

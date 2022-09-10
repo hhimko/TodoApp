@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TodoItem>
+﻿@model ScheduleViewModel
 
 @{
     object? RenderItemTagIfTrue(string innerHtml, bool flag)
@@ -12,12 +12,21 @@
 }
 
 <div class="schedule">
-    @foreach (TodoItem todo in Model)
+    @foreach (IScheduledItem scheduleItem in Model.Items)
     {
-        @if (todo.ScheduledTime is not null) 
+        @if (scheduleItem is FreeTimeInterval fti)
         {
             <div class="schedule-left">
-                @todo.ScheduledTime?.ToString("HH:mm")
+                @fti.ScheduledTime.Value.ToString("HH:mm")
+            </div>
+            <div class="schedule-right todoitem schedule-freetime">
+                @fti.intervalDescription
+            </div>
+        }
+        else if (scheduleItem is TodoItem todo)
+        {
+            <div class="schedule-left">
+                @todo.ScheduledTime.Value.ToString("HH:mm")
             </div>
             <div class="schedule-right todoitem @(todo.Done ? "done" : "") @(todo.Id == ViewBag.HoveredTodoId ? "loaded-hovered" : "")">
                 <div class="todoitem-left">
@@ -28,10 +37,10 @@
                         @todo.Description
                     </div>
                     <div class="todoitem-info">
-                        some epic text 
+                        some epic text
                         @RenderItemTagIfTrue("done", todo.Done)
                     </div>
-                </div> 
+                </div>
             </div>
         }
     }

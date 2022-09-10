@@ -219,12 +219,19 @@ body {
     position: relative;
     font-size: 0.8rem;
     top: -13px;
-    color: var(--col-txt-gray);
+    color: var(--col-txt-gray)
 }
 
 .schedule-right {
     min-height: 70px;
-    border-radius: 15px;
+}
+
+.schedule-freetime {
+    display: block;
+    min-height: 0;
+    background-color: var(--col-done-dark);
+    color: var(--col-txt-gray);
+    padding: 5px 25px;
 }
 
 @keyframes btnSubmitClickAnim {
