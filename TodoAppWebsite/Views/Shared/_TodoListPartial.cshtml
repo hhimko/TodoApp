@@ -18,8 +18,8 @@
 <ul class="todolist">
     @foreach (TodoItem todo in Model)
     {
-        <li @(todo.Done ? "class=done" : "") > 
-            <div class="todoitem-left">
+        <li class="@(todo.Done ? "done" : "") @(todo.Id == ViewBag.HoveredTodoId ? "loaded-hovered" : "")">
+            <div class="todoitem-left" >
                 <button class="todoitem-btn-done" id="@todo.Id" onclick="handleBtnDoneClick(this)"></button>
             </div>
             <div class="todoitem-right">

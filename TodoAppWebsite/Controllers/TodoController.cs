@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
 using System.Text.Json;
 
 namespace TodoAppWebsite.Controllers;
@@ -40,25 +40,13 @@ public class TodoController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> TodoListPartial()
+    public async Task<IActionResult> TodoListPartial(int? hoveredTodoId)
     {
-        var client = _httpClient.CreateClient("Todo");
+        var todoClient = _httpClient.CreateClient("Todo");
+        var model = await todoClient.GetAsyncFromAPI<IEnumerable<TodoItem>>("api/todo/today");
 
-        var response = await client.GetAsync("api/todo/today");
-        if (!response.IsSuccessStatusCode)
-            return StatusCode(StatusCodes.Status500InternalServerError, "Connecion to API failed");
-
-        IEnumerable<TodoItem>? result;
-        try
-        {
-            result = await response.Content.ReadFromJsonAsync<IEnumerable<TodoItem>>();
-        } 
-        catch (JsonException e)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-        }
-
-        return PartialView("_TodoListPartial", result ?? Enumerable.Empty<TodoItem>());
+        ViewBag.HoveredTodoId = hoveredTodoId;
+        return PartialView("_TodoListPartial", model ?? Enumerable.Empty<TodoItem>());
     }
 
     [HttpPost]
