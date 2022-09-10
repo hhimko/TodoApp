@@ -1,0 +1,38 @@
+﻿@model IEnumerable<TodoItem>
+
+@{
+    object? RenderItemTagIfTrue(string innerHtml, bool flag)
+    {
+        if (flag){
+    <span class="todoitem-tag"> @innerHtml </span>
+        } 
+
+        return null;
+    }
+}
+
+<div class="schedule">
+    @foreach (TodoItem todo in Model)
+    {
+        @if (todo.ScheduledTime is not null) 
+        {
+            <div class="schedule-left">
+                @todo.ScheduledTime?.ToString("HH:mm")
+            </div>
+            <div class="schedule-right todoitem @(todo.Done ? "done" : "") @(todo.Id == ViewBag.HoveredTodoId ? "loaded-hovered" : "")">
+                <div class="todoitem-left">
+                    <button class="todoitem-btn-done" id="@todo.Id" onclick="handleBtnDoneClick(this)"></button>
+                </div>
+                <div class="todoitem-right">
+                    <div class="todoitem-desc">
+                        @todo.Description
+                    </div>
+                    <div class="todoitem-info">
+                        some epic text 
+                        @RenderItemTagIfTrue("done", todo.Done)
+                    </div>
+                </div> 
+            </div>
+        }
+    }
+</div>

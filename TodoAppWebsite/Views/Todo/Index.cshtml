@@ -6,15 +6,15 @@
 
 <div id="dashboard-container">
     <div id="schedule-container" class="dashboard-item">
-        some text here
-    </div>
-    <div id="schedule-containers" class="dashboard-item">
-        some text there
+        <div class="container-title"> 
+            scheduled 
+        </div>
+        <div id="schedule-partial"> </div>
     </div>
 
-    <div id="section-todo">
+    <div>
         <div id="todolist-container" class="dashboard-item">
-            <div class="todolist-title"> 
+            <div class="container-title">
                 todo 
             </div>
             <div id="todolist-partial"> </div>
@@ -37,76 +37,10 @@
     </div>
 </div>
 
-
 @section Scripts{
     <script type="text/javascript">
-        displayPopupMsg = (msg) => {
-            const popup = $('#todopopup')
-
-            if (popup.not(':hidden')){
-                popup.stop()
-                popup.slideUp(400, () => {
-                    popup.html(msg)
-                })
-            } else {
-                popup.html(msg)
-            }
-
-            popup.slideDown(600).delay(3000).slideUp(400)
-        }
-
-        loadTodoList = () => {
-            $.ajax({
-                url: '@Url.Action("TodoListPartial")',
-                type: 'POST'
-            }).done((data) => {
-                $('#todolist-partial').html(data)
-            }).fail((e) => {
-                displayPopupMsg(e.status + ': ' + e.responseText)
-            })
-        }
-
-        handleBtnDoneClick = (elem) => {
-            var id = $(elem).attr('id')
-
-            $.ajax({
-                url: '@Url.Action("ChangeDoneStateAjax")',
-                data: {
-                    id: id
-                },
-                type: 'POST'
-            }).done(loadTodoList)
-        }
-
-        handleBtnSubmitClick = (elem) => {
-            $(elem).removeClass('animate')
-            setTimeout(() => {$(elem).addClass('animate')}, 1 )
-        }
-
-        handleFormSubmit = (e) => {
-            e.preventDefault()
-            var input = $('#desc-input')
-
-            $.ajax({
-                url: '/',
-                type: 'POST',
-                data: {
-                    Description: input.val(),
-                    DayNumber: @DateOnly.FromDateTime(DateTime.Now).DayNumber
-                }
-            }).done((e) => {
-                loadTodoList()
-                input.val('')
-                displayPopupMsg('new todo added')
-            }).fail((e) => {
-                displayPopupMsg(Object.values(e.responseJSON))
-            })
-        }
-
-        $(document).ready(() => {
-            $('#todoadd-form').submit((e) => handleFormSubmit(e))
-
-            loadTodoList()
-        })
+        getDayNumber = () => @DateOnly.FromDateTime(DateTime.Now).DayNumber
+        getActionUrl = (action_name) => '/Todo/' + action_name
     </script>
+    <script src="~/js/dashboard.js"></script>
 }

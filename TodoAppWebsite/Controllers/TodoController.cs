@@ -50,6 +50,16 @@ public class TodoController : Controller
     }
 
     [HttpPost]
+    public async Task<IActionResult> SchedulePartial(int? hoveredTodoId)
+    {
+        var todoClient = _httpClient.CreateClient("Todo");
+        var model = await todoClient.GetAsyncFromAPI<IEnumerable<TodoItem>>("api/todo/today");
+
+        ViewBag.HoveredTodoId = hoveredTodoId;
+        return PartialView("_SchedulePartial", model ?? Enumerable.Empty<TodoItem>());
+    }
+
+    [HttpPost]
     public async Task<bool> ChangeDoneStateAjax(int? id)
     {
         if (id is null)

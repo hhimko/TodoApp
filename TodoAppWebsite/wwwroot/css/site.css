@@ -51,16 +51,13 @@ body {
     border-radius: 15px;
 }
 
-#section-todo {
-    width: 600px;
-}
-
 #todolist-container {
     min-height: 800px;
+    width: 600px;
     overflow: hidden;
 }
 
-.todolist-title {
+.container-title {
     color: var(--col-txt-white);
     font-size: 2.5rem;
     font-weight: 100;
@@ -73,7 +70,7 @@ body {
     overflow: hidden;
 }
 
-.todolist li {
+.todoitem {
     display: grid;
     grid-template-columns: min-content 1fr;
     grid-column-gap: 15px;
@@ -82,11 +79,11 @@ body {
     background-color: var(--col-bg-dark);
 }
 
-.todolist li:not(:last-child) {
+.todoitem:not(:last-child) {
     margin-bottom: 10px;
 }
 
-.todolist li.done {
+.todoitem.done {
     background-color: var(--col-done-dark);
 }
 
@@ -97,13 +94,13 @@ body {
     transition-duration: 0.3s;
 }
 
-.done .todoitem-left {
-    background-color: var(--col-done-light);
-}
-
-.todolist li:hover .todoitem-left {
+.todoitem:hover .todoitem-left {
     width: 60px;
     border-radius: 15px;
+}
+
+.done .todoitem-left {
+    background-color: var(--col-done-light);
 }
 
 .todoitem-btn-done {
@@ -208,6 +205,26 @@ body {
     z-index: -1;
     transform: translateY(-25px);
     font-weight: 400;
+}
+
+.schedule {
+    margin-top: 13px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-column-gap: 20px;
+    width: 400px;
+}
+
+.schedule-left {
+    position: relative;
+    font-size: 0.8rem;
+    top: -13px;
+    color: var(--col-txt-gray);
+}
+
+.schedule-right {
+    min-height: 70px;
+    border-radius: 15px;
 }
 
 @keyframes btnSubmitClickAnim {
