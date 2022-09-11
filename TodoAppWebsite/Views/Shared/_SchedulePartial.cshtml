@@ -17,7 +17,7 @@
         @if (scheduleItem is FreeTimeInterval fti)
         {
             <div class="schedule-left">
-                @fti.ScheduledTime.Value.ToString("HH:mm")
+                @fti.ScheduledTime?.Start.ToString("HH:mm")
             </div>
             <div class="schedule-right todoitem schedule-freetime">
                 @fti.intervalDescription
@@ -26,7 +26,7 @@
         else if (scheduleItem is TodoItem todo)
         {
             <div class="schedule-left">
-                @todo.ScheduledTime.Value.ToString("HH:mm")
+                @todo.ScheduledTime?.Start.ToString("HH:mm")
             </div>
             <div class="schedule-right todoitem @(todo.Done ? "done" : "") @(todo.Id == ViewBag.HoveredTodoId ? "loaded-hovered" : "")">
                 <div class="todoitem-left">
@@ -37,7 +37,6 @@
                         @todo.Description
                     </div>
                     <div class="todoitem-info">
-                        some epic text
                         @RenderItemTagIfTrue("done", todo.Done)
                     </div>
                 </div>

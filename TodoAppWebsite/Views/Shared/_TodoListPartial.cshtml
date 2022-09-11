@@ -2,7 +2,7 @@
 
 @{
     StringHtmlContent RenderScheduledTimeString(TodoItem todo) => 
-        new(todo.ScheduledTime?.ToString("HH:mm") ?? "unsheduled");
+        new(todo.ScheduledTime?.Start.ToString("HH:mm") ?? "unscheduled");
 
 
     object? RenderItemTagIfTrue(string innerHtml, bool flag)

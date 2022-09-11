@@ -5,8 +5,8 @@ public class TestingDbContext : IDbContext
 {
     private List<TodoItem> todoItems = new() { 
         new(0, "Foo", DateTime.Today),
-        new(1, "Bar", DateTime.Today, done: true, scheduledTime: new TimeOnly(16, 30)),
-        new(2, "Baz", DateTime.Today, scheduledTime: new TimeOnly(18, 00))
+        new(1, "Bar", DateTime.Today, done: true, scheduledTime: new TimeRange(new TimeOnly(16, 30), new TimeOnly(17, 30))),
+        new(2, "Baz", DateTime.Today, scheduledTime: new TimeRange(new TimeOnly(18, 00), new TimeOnly(12, 00)))
     };
 
     public TodoItem? GetById(long id)

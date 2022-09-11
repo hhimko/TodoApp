@@ -1,9 +1,12 @@
-﻿namespace TodoAppWebsite.Models.ViewModels;
+﻿using TodoAppLib.Models;
+
+namespace TodoAppWebsite.Models.ViewModels;
 
 
 public class ScheduleViewModel
 {
     public IEnumerable<IScheduledItem> Items { get; set; }
+    public IScheduledItem CurrentyActive { get; set; }
 
 
     public ScheduleViewModel(IEnumerable<TodoItem> todoItems)
@@ -19,15 +22,17 @@ public class ScheduleViewModel
         if (!todoItems.Any())
             return scheduleItems;
 
-        var now = TimeOnly.FromDateTime(DateTime.Now);
-        now = new TimeOnly(10, now.Minute); // (mili)seconds are stripped
 
-        var firstTime = todoItems.ElementAt(0).ScheduledTime;
+        var now = TimeOnly.FromDateTime(DateTime.Now);
+        now = new TimeOnly(now.Hour, now.Minute); // (mili)seconds are stripped
+
+        var firstTime = todoItems.ElementAt(0).ScheduledTime!.Start;
         if (firstTime > now)
         {
-            TimeSpan timeLeft = firstTime.Value - now;
-            scheduleItems.Add(new FreeTimeInterval(timeLeft, now));
+            var timeRange = new TimeRange(now, firstTime);
+            scheduleItems.Add(new FreeTimeInterval(timeRange));
         }
+
 
         int i;
         for (i = 0; i < todoItems.Count() - 1; i++)
@@ -36,15 +41,27 @@ public class ScheduleViewModel
             TodoItem next = todoItems.ElementAt(i + 1);
             scheduleItems.Add(current);
 
-            if (next.ScheduledTime > current.ScheduledTime)
+            if (next.ScheduledTime!.Start > current.ScheduledTime!.End)
             {
-                TimeSpan timeLeft = next.ScheduledTime.Value - current.ScheduledTime.Value;
-                scheduleItems.Add(new FreeTimeInterval(timeLeft, current.ScheduledTime.Value));
+                var timeRange = new TimeRange(current.ScheduledTime!.End, next.ScheduledTime!.Start);
+                scheduleItems.Add(new FreeTimeInterval(timeRange));
             }
         }
 
         scheduleItems.Add(todoItems.ElementAt(i));
 
         return scheduleItems;
+    }
+
+    private static IScheduledItem GetCurrentlyActive(IEnumerable<IScheduledItem> scheduledItems)
+    {
+        var now = TimeOnly.FromDateTime(DateTime.Now);
+        now = new TimeOnly(now.Hour, now.Minute); // (mili)seconds are stripped
+
+        foreach (var scheduledItem in scheduledItems)
+        {
+
+        }
+        return null;
     }
 }

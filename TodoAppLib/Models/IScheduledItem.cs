@@ -3,5 +3,5 @@
 
 public interface IScheduledItem
 {
-    TimeOnly? ScheduledTime { get; }
+    TimeRange? ScheduledTime { get; }
 }

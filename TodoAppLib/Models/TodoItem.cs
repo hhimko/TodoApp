@@ -18,7 +18,7 @@ public record TodoItem : IScheduledItem
     public bool Done { get; init; } = false;
 
     [JsonConverter(typeof(TimeOnlyJsonConverter))]
-    public TimeOnly? ScheduledTime { get; init; } = null;
+    public TimeRange? ScheduledTime { get; init; } = null;
 
     [JsonConverter(typeof(DateOnlyJsonConverter))]
     public DateOnly Date => DateOnly.FromDayNumber(DayNumber);
@@ -26,7 +26,7 @@ public record TodoItem : IScheduledItem
     [JsonConstructorAttribute]
     public TodoItem() { }
 
-    public TodoItem(long? id, string description, int dayNumber, bool done = false, TimeOnly? scheduledTime = null)
+    public TodoItem(long? id, string description, int dayNumber, bool done = false, TimeRange? scheduledTime = null)
     {
         Id = id;
         Description = description;
@@ -35,9 +35,9 @@ public record TodoItem : IScheduledItem
         ScheduledTime = scheduledTime;
     }
 
-    public TodoItem(long? id, string description, DateOnly dateOnly, bool done = false, TimeOnly? scheduledTime = null)
+    public TodoItem(long? id, string description, DateOnly dateOnly, bool done = false, TimeRange? scheduledTime = null)
         : this(id, description, dateOnly.DayNumber, done, scheduledTime) { }
 
-    public TodoItem(long? id, string description, DateTime dateTime, bool done = false, TimeOnly? scheduledTime = null)
+    public TodoItem(long? id, string description, DateTime dateTime, bool done = false, TimeRange? scheduledTime = null)
         : this(id, description, DateOnly.FromDateTime(dateTime).DayNumber, done, scheduledTime) { }
 }
