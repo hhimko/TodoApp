@@ -22,7 +22,7 @@ public record TodoItem : IScheduledItem
     [JsonConverter(typeof(DateOnlyJsonConverter))]
     public DateOnly Date => DateOnly.FromDayNumber(DayNumber);
 
-    [JsonConstructorAttribute]
+    [JsonConstructor]
     public TodoItem() { }
 
     public TodoItem(long? id, string description, int dayNumber, bool done = false, TimeRange? scheduledTime = null)
