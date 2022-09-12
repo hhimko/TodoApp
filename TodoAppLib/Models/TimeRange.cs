@@ -10,7 +10,10 @@ public record TimeRange
     public TimeOnly Start { get; init; }
 
     public TimeSpan Interval { get; init; }
+<<<<<<< HEAD
 
+=======
+>>>>>>> e0715968c076f88213db28b570fa78dfb9b768df
     [JsonConverter(typeof(TimeOnlyJsonConverter))]
     public TimeOnly End { get; init; }
 
