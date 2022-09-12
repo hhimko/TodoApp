@@ -17,7 +17,6 @@ public record TodoItem : IScheduledItem
 
     public bool Done { get; init; } = false;
 
-    [JsonConverter(typeof(TimeOnlyJsonConverter))]
     public TimeRange? ScheduledTime { get; init; } = null;
 
     [JsonConverter(typeof(DateOnlyJsonConverter))]
