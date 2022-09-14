@@ -1,46 +1,67 @@
 ﻿@model ScheduleViewModel
 
-@{
-    object? RenderItemTagIfTrue(string innerHtml, bool flag)
-    {
-        if (flag){
-    <span class="todoitem-tag"> @innerHtml </span>
-        } 
 
-        return null;
+@functions {
+    public int GetActiveScheduleTimePercentage(IScheduledItem scheduleItem) 
+    {
+        var now = TimeOnly.FromDateTime(DateTime.Now);
+
+        var elapsed = now - scheduleItem.ScheduledTime!.Start;
+        var elapsedMinutes = elapsed.TotalMinutes;
+
+        var percentage = (double)elapsedMinutes / scheduleItem.ScheduledTime.Interval.TotalMinutes * 100;
+
+        return Math.Clamp(Convert.ToInt32(percentage), 0, 100);
     }
 }
 
-<div class="schedule">
+<ul class="schedule">
     @foreach (IScheduledItem scheduleItem in Model.Items)
     {
-        @if (scheduleItem is FreeTimeInterval fti)
-        {
-            <div class="schedule-left">
-                @fti.ScheduledTime?.Start.ToString("HH:mm")
-            </div>
-            <div class="schedule-right todoitem schedule-freetime">
-                @fti.intervalDescription
-            </div>
-        }
-        else if (scheduleItem is TodoItem todo)
-        {
-            <div class="schedule-left">
-                @todo.ScheduledTime?.Start.ToString("HH:mm")
-            </div>
-            <div class="schedule-right todoitem @(todo.Done ? "done" : "") @(todo.Id == ViewBag.HoveredTodoId ? "loaded-hovered" : "")">
-                <div class="todoitem-left">
-                    <button class="todoitem-btn-done" id="@todo.Id" onclick="handleBtnDoneClick(this)"></button>
+        <li class="scheduleitem">
+            @if (scheduleItem is FreeTimeInterval fti)
+            {
+                <div class="scheduleitem-left">
+                    @fti.ScheduledTime?.Start.ToString("HH:mm")
                 </div>
-                <div class="todoitem-right">
-                    <div class="todoitem-desc">
-                        @todo.Description
+                <div class="scheduleitem-right todoitem schedule-freetime">
+                    @fti.intervalDescription
+
+                    @if (scheduleItem.Equals(Model.CurrentyActive))
+                    {
+                        <div id="schedule-pointer" style="top:@GetActiveScheduleTimePercentage(scheduleItem)%">
+                            <p> @DateTime.Now.ToString("HH:mm") </p>
+                        </div>
+                    }
+
+                </div>
+            }
+            else if (scheduleItem is TodoItem todo)
+            {
+                <div class="scheduleitem-left">
+                    @todo.ScheduledTime?.Start.ToString("HH:mm")
+                </div>
+                <div class="scheduleitem-right todoitem @(todo.Done ? "done" : "") @(todo.Id == ViewBag.HoveredTodoId ? "loaded-hovered" : "")">
+                    <div class="todoitem-left">
+                        <button class="todoitem-btn-done" id="@todo.Id" onclick="handleBtnDoneClick(this)"></button>
                     </div>
-                    <div class="todoitem-info">
-                        @RenderItemTagIfTrue("done", todo.Done)
+                    <div class="todoitem-right">
+                        <div class="todoitem-desc">
+                            @todo.Description
+                        </div>
+                        <div class="todoitem-info">
+
+                        </div>
+
+                        @if (scheduleItem.Equals(Model.CurrentyActive))
+                        {
+                            <div id="schedule-pointer" style="top:@GetActiveScheduleTimePercentage(scheduleItem)%">
+                                <p> @DateTime.Now.ToString("HH:mm") </p>
+                            </div>
+                        }
                     </div>
                 </div>
-            </div>
-        }
+            }
+        </li>
     }
-</div>
+</ul>

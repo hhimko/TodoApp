@@ -6,12 +6,13 @@ namespace TodoAppWebsite.Models.ViewModels;
 public class ScheduleViewModel
 {
     public IEnumerable<IScheduledItem> Items { get; set; }
-    public IScheduledItem CurrentyActive { get; set; }
+    public IScheduledItem? CurrentyActive { get; set; }
 
 
     public ScheduleViewModel(IEnumerable<TodoItem> todoItems)
     {
         Items = GetScheduleItems(todoItems);
+        CurrentyActive = GetCurrentlyActive(Items);
     }
 
     private static IEnumerable<IScheduledItem> GetScheduleItems(IEnumerable<TodoItem> todoItems)
@@ -22,6 +23,7 @@ public class ScheduleViewModel
         if (!todoItems.Any())
             return scheduleItems;
 
+        todoItems.OrderBy(todoItem => todoItem.ScheduledTime!.Start);
 
         var now = TimeOnly.FromDateTime(DateTime.Now);
         now = new TimeOnly(now.Hour, now.Minute); // (mili)seconds are stripped
@@ -53,15 +55,11 @@ public class ScheduleViewModel
         return scheduleItems;
     }
 
-    private static IScheduledItem GetCurrentlyActive(IEnumerable<IScheduledItem> scheduledItems)
+    private static IScheduledItem? GetCurrentlyActive(IEnumerable<IScheduledItem> scheduledItems)
     {
         var now = TimeOnly.FromDateTime(DateTime.Now);
         now = new TimeOnly(now.Hour, now.Minute); // (mili)seconds are stripped
 
-        foreach (var scheduledItem in scheduledItems)
-        {
-
-        }
-        return null;
+        return scheduledItems.FirstOrDefault(item => item.ScheduledTime?.Start <= now && now < item.ScheduledTime?.End);
     }
 }

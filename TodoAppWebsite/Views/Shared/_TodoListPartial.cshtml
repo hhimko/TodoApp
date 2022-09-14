@@ -1,8 +1,14 @@
 ﻿@model IEnumerable<TodoItem>
 
 @{
-    StringHtmlContent RenderScheduledTimeString(TodoItem todo) => 
-        new(todo.ScheduledTime?.Start.ToString("HH:mm") ?? "unscheduled");
+    string RenderScheduledTimeString(TodoItem todo){
+        if (todo.ScheduledTime is null)
+            return "unscheduled";
+
+        var start = todo.ScheduledTime!.Start.ToString("HH:mm");
+        var end = todo.ScheduledTime!.End.ToString("HH:mm");
+        return $"{start} - {end}";
+    }
 
 
     object? RenderItemTagIfTrue(string innerHtml, bool flag)

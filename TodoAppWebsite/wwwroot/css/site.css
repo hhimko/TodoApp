@@ -208,21 +208,31 @@ body {
 }
 
 .schedule {
+    list-style-type: none;
+    padding-left: 0;
     margin-top: 13px;
+}
+
+.scheduleitem {
+    position: relative;
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: min-content 1fr;
     grid-column-gap: 20px;
     width: 400px;
 }
 
-.schedule-left {
+.scheduleitem:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.scheduleitem-left {
     position: relative;
     font-size: 0.8rem;
     top: -13px;
     color: var(--col-txt-gray)
 }
 
-.schedule-right {
+.scheduleitem-right {
     min-height: 70px;
 }
 
@@ -233,6 +243,25 @@ body {
     color: var(--col-txt-gray);
     padding: 5px 25px;
 }
+
+#schedule-pointer {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    left: 0;
+    top: 0%;
+    background-color: var(--col-purple);
+}
+
+#schedule-pointer p{
+    display: block;
+    position:absolute;
+    color: var(--col-purple);
+    top: -13px;
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+
 
 @keyframes btnSubmitClickAnim {
     0% {

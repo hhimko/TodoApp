@@ -65,14 +65,14 @@ public class TodoController : Controller
         if (id is null)
             return false;
 
-        var client = _httpClient.CreateClient("Todo");
-        TodoItem? item = await client.GetFromJsonAsync<TodoItem>($"api/todo/item/{id}");
+        var todoClient = _httpClient.CreateClient("Todo");
+        var item = await todoClient.GetAsyncFromAPI<TodoItem>($"api/todo/item/{id}");
         if (item is null)
             return false;
 
         TodoItem updated = new(item.Id, item.Description, item.DayNumber, !item.Done, item.ScheduledTime);
-        var response = await client.PutAsJsonAsync($"api/todo/item/{id}", updated);
-
+        
+        var response = await todoClient.PutAsJsonAsync($"api/todo/item/{id}", updated);
         return response.IsSuccessStatusCode;
     }
 
