@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Net;
-using System.Text.Json;
 
 namespace TodoAppWebsite.Controllers;
 
@@ -11,12 +9,14 @@ public class TodoController : Controller
 {
     private readonly IHttpClientFactory _httpClient;
     private readonly ILogger<TodoController> _logger;
+    private readonly IDateTimeProvider _dateTimeProvider;
 
 
-    public TodoController(IHttpClientFactory httpClient, ILogger<TodoController> logger)
+    public TodoController(IHttpClientFactory httpClient, ILogger<TodoController> logger, IDateTimeProvider dateTime)
     {
         _httpClient = httpClient;
         _logger = logger;
+        _dateTimeProvider = dateTime;
     }
 
     public IActionResult Index()
@@ -56,7 +56,7 @@ public class TodoController : Controller
         var model = await todoClient.GetAsyncFromAPI<IEnumerable<TodoItem>>("api/todo/today");
 
         ViewBag.HoveredTodoId = hoveredTodoId;
-        return PartialView("_SchedulePartial", new ScheduleViewModel(model ?? Enumerable.Empty<TodoItem>()));
+        return PartialView("_SchedulePartial", new ScheduleViewModel(model ?? Enumerable.Empty<TodoItem>(), _dateTimeProvider));
     }
 
     [HttpPost]

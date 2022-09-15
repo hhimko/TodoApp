@@ -5,17 +5,21 @@ namespace TodoAppWebsite.Models.ViewModels;
 
 public class ScheduleViewModel
 {
+    private readonly IDateTimeProvider _dateTimeProvider;
+
     public IEnumerable<IScheduledItem> Items { get; set; }
     public IScheduledItem? CurrentyActive { get; set; }
 
 
-    public ScheduleViewModel(IEnumerable<TodoItem> todoItems)
+    public ScheduleViewModel(IEnumerable<TodoItem> todoItems, IDateTimeProvider dateTime)
     {
+        _dateTimeProvider = dateTime;
+
         Items = GetScheduleItems(todoItems);
         CurrentyActive = GetCurrentlyActive(Items);
     }
 
-    private static IEnumerable<IScheduledItem> GetScheduleItems(IEnumerable<TodoItem> todoItems)
+    private IEnumerable<IScheduledItem> GetScheduleItems(IEnumerable<TodoItem> todoItems)
     {
         List<IScheduledItem> scheduleItems = new();
 
@@ -25,7 +29,7 @@ public class ScheduleViewModel
 
         todoItems.OrderBy(todoItem => todoItem.ScheduledTime!.Start);
 
-        var now = TimeOnly.FromDateTime(DateTime.Now);
+        var now = _dateTimeProvider.Time;
         now = new TimeOnly(now.Hour, now.Minute); // (mili)seconds are stripped
 
         var firstTime = todoItems.ElementAt(0).ScheduledTime!.Start;
@@ -55,9 +59,9 @@ public class ScheduleViewModel
         return scheduleItems;
     }
 
-    private static IScheduledItem? GetCurrentlyActive(IEnumerable<IScheduledItem> scheduledItems)
+    private IScheduledItem? GetCurrentlyActive(IEnumerable<IScheduledItem> scheduledItems)
     {
-        var now = TimeOnly.FromDateTime(DateTime.Now);
+        var now = _dateTimeProvider.Time;
         now = new TimeOnly(now.Hour, now.Minute); // (mili)seconds are stripped
 
         return scheduledItems.FirstOrDefault(item => item.ScheduledTime?.Start <= now && now < item.ScheduledTime?.End);

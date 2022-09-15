@@ -1,4 +1,5 @@
 ﻿@model TodoItem
+@inject IDateTimeProvider dateTimeProvider
 
 @{
     ViewData["Title"] = "Dashboard";
@@ -39,7 +40,7 @@
 
 @section Scripts{
     <script type="text/javascript">
-        getDayNumber = () => @DateOnly.FromDateTime(DateTime.Now).DayNumber
+        getDayNumber = () => @dateTimeProvider.Date.DayNumber
         getActionUrl = (action_name) => '/Todo/' + action_name
     </script>
     <script src="~/js/dashboard.js"></script>
