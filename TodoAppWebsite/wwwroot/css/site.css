@@ -246,20 +246,42 @@ body {
 
 #schedule-pointer {
     position: absolute;
+    height: 2px;
+    left: 0;
+    background-color: var(--col-purple);
+}
+
+#schedule-pointer {
+    position: absolute;
     width: 100%;
     height: 2px;
     left: 0;
     top: 0%;
     background-color: var(--col-purple);
+    z-index: 1;
 }
 
-#schedule-pointer p{
+#schedule-pointer p {
     display: block;
-    position:absolute;
+    position: absolute;
+    background-image: linear-gradient(rgb(0,0,0,0), var(--col-bg-light) 40% 60%, rgb(0,0,0,0));
     color: var(--col-purple);
     top: -13px;
+    padding: 15px 0;
+    margin: -18px 0;
     font-size: 0.8rem;
     font-weight: 400;
+    z-index: -1;
+}
+
+#schedule-pointer p::after {
+    content: '';
+    display: block;
+    position: absolute;
+    background-color: var(--col-purple);
+    height: 2px;
+    width: 100%;
+    margin-top: -3px;
 }
 
 
