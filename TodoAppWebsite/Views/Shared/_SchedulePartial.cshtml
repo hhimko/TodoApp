@@ -1,68 +1,19 @@
 ﻿@model ScheduleViewModel
 @inject IDateTimeProvider dateTimeProvider
 
-
 @functions {
-    public int GetActiveScheduleTimePercentage(IScheduledItem scheduleItem) 
-    {
-        var now = dateTimeProvider.Time;
-
-        var elapsed = now - scheduleItem.ScheduledTime!.Start;
-        var elapsedMinutes = elapsed.TotalMinutes;
-
-        var percentage = (double)elapsedMinutes / scheduleItem.ScheduledTime.Interval.TotalMinutes * 100;
-
-        return Math.Clamp(Convert.ToInt32(percentage), 0, 100);
-    }
+    const int MIN_INTERVAL = 15;
+    const int MINS_PER_DAY = 1440;
 }
 
-<ul class="schedule">
-    @foreach (IScheduledItem scheduleItem in Model.Items)
+
+<div class="schedule">
+    @for (int h = 0; h < 24; h++)
     {
-        <li class="scheduleitem">
-            @if (scheduleItem is FreeTimeInterval fti)
-            {
-                <div class="scheduleitem-left">
-                    @fti.ScheduledTime?.Start.ToString("HH:mm")
-                </div>
-                <div class="scheduleitem-right todoitem schedule-freetime">
-                    @fti.intervalDescription
-
-                    @if (scheduleItem.Equals(Model.CurrentyActive))
-                    {
-                        <div id="schedule-pointer" style="top:@GetActiveScheduleTimePercentage(scheduleItem)%">
-                            <p> @dateTimeProvider.Now.ToString("HH:mm") </p>
-                        </div>
-                    }
-
-                </div>
-            }
-            else if (scheduleItem is TodoItem todo)
-            {
-                <div class="scheduleitem-left">
-                    @todo.ScheduledTime?.Start.ToString("HH:mm")
-                </div>
-                <div class="scheduleitem-right todoitem @(todo.Done ? "done" : "") @(todo.Id == ViewBag.HoveredTodoId ? "loaded-hovered" : "")">
-                    <div class="todoitem-left">
-                        <button class="todoitem-btn-done" id="@todo.Id" onclick="handleBtnDoneClick(this)"></button>
-                    </div>
-                    <div class="todoitem-right">
-                        <div class="todoitem-desc">
-                            @todo.Description
-                        </div>
-                        <div class="todoitem-info">
-
-                        </div>
-
-                        @if (scheduleItem.Equals(Model.CurrentyActive))
-                        {
-                            <div id="schedule-pointer" style="top:@GetActiveScheduleTimePercentage(scheduleItem)%">
-                                <p> @dateTimeProvider.Now.ToString("HH:mm") </p>
-                            </div>
-                        }
-                    </div>
-                </div>
-            }
-        </li>
+        <div class="schedule-left"> @String.Format("{0:00}:00", h) </div>
+        <div class="schedule-right">  </div>
+        <div class="schedule-right">  </div>
+        <div class="schedule-right">  </div>
+        <div class="schedule-right">  </div>
     }
-</ul>
+</div>

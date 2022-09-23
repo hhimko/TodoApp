@@ -1,6 +1,4 @@
-﻿using TodoAppLib.Models;
-
-namespace TodoAppWebsite.Models.ViewModels;
+﻿namespace TodoAppWebsite.Models.ViewModels;
 
 
 public class ScheduleViewModel
@@ -14,7 +12,6 @@ public class ScheduleViewModel
     public ScheduleViewModel(IEnumerable<TodoItem> todoItems, IDateTimeProvider dateTime)
     {
         _dateTimeProvider = dateTime;
-
         Items = GetScheduleItems(todoItems);
         CurrentyActive = GetCurrentlyActive(Items);
     }

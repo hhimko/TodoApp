@@ -12,6 +12,20 @@
     --col-purple: #9B3786;
     --col-blue: #286C77;
     --col-blue-hover: #26777F;
+
+    --schedule-row-height: 20px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px; /* horizontal mode scroll */
+    background-color: var(--col-bg-darkest);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--col-blue);
+    border-radius: 5px;
 }
 
 
@@ -52,7 +66,7 @@ body {
 }
 
 #todolist-container {
-    min-height: 800px;
+    height: 800px;
     width: 600px;
     overflow: hidden;
 }
@@ -207,81 +221,40 @@ body {
     font-weight: 400;
 }
 
-.schedule {
-    list-style-type: none;
-    padding-left: 0;
-    margin-top: 13px;
+.schedule .schedule-right {
+    border: 1px solid;
+    box-sizing: border-box;
 }
 
-.scheduleitem {
-    position: relative;
+.schedule .schedule-right:not(:last-child) {
+    border-bottom-width: 0px;
+}
+
+.schedule-container {
+    position: absolute;
+    background-color: red;
+    width: max-content;
+    height: max-content;
+}
+
+.schedule {
     display: grid;
     grid-template-columns: min-content 1fr;
-    grid-column-gap: 20px;
+    grid-template-rows: auto;
+    height: 800px;
     width: 400px;
+    overflow-y: scroll;
+    scroll-margin: 0;
 }
 
-.scheduleitem:not(:last-child) {
-    margin-bottom: 10px;
+.schedule-left {
+    grid-row: span 4;
+    overflow: hidden;
 }
 
-.scheduleitem-left {
-    position: relative;
-    font-size: 0.8rem;
-    top: -13px;
-    color: var(--col-txt-gray)
-}
-
-.scheduleitem-right {
-    min-height: 70px;
-}
-
-.schedule-freetime {
-    display: block;
-    min-height: 0;
-    background-color: var(--col-done-dark);
-    color: var(--col-txt-gray);
-    padding: 5px 25px;
-}
-
-#schedule-pointer {
-    position: absolute;
-    height: 2px;
-    left: 0;
-    background-color: var(--col-purple);
-}
-
-#schedule-pointer {
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    left: 0;
-    top: 0%;
-    background-color: var(--col-purple);
-    z-index: 1;
-}
-
-#schedule-pointer p {
-    display: block;
-    position: absolute;
-    background-image: linear-gradient(rgb(0,0,0,0), var(--col-bg-light) 40% 60%, rgb(0,0,0,0));
-    color: var(--col-purple);
-    top: -13px;
-    padding: 15px 0;
-    margin: -18px 0;
-    font-size: 0.8rem;
-    font-weight: 400;
-    z-index: -1;
-}
-
-#schedule-pointer p::after {
-    content: '';
-    display: block;
-    position: absolute;
-    background-color: var(--col-purple);
-    height: 2px;
-    width: 100%;
-    margin-top: -3px;
+.schedule-right {
+    height: var(--schedule-row-height);
+    overflow: hidden;
 }
 
 
