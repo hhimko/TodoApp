@@ -1,11 +1,6 @@
 ﻿@model ScheduleViewModel
 @inject IDateTimeProvider dateTimeProvider
 
-@functions {
-    const int MIN_INTERVAL = 15;
-    const int MINS_PER_DAY = 1440;
-}
-
 
 <div class="schedule">
     @for (int h = 0; h < 24; h++)

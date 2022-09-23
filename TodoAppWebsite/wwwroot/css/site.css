@@ -28,7 +28,6 @@
     border-radius: 5px;
 }
 
-
 html {
   font-size: 14px;
 }
@@ -39,49 +38,63 @@ html {
   }
 }
 
-html {
-  position: relative;
-}
-
 body {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 100;
-    margin-bottom: 60px;
     background-color: var(--col-bg-dark);
-    color: white;
+    font-family: 'Nunito', sans-serif;
+    color: var(--col-txt-white);
+    font-weight: 100;
 }
 
-#dashboard-container {
+#dashboard {
+    position: absolute;
+    width: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     gap: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.dashboard-col {
+    gap: 25px;
+    height: 90vh;
+}
+
+.horizontal-flex {
+    display: flex;
+    flex-direction: column;
 }
 
 .dashboard-item {
+    border-radius: 15px;
     padding: 15px 25px;
     background-color: var(--col-bg-light);
-    border-radius: 15px;
-}
-
-#todolist-container {
-    height: 800px;
-    width: 600px;
     overflow: hidden;
 }
 
+.grow {
+    flex-grow: 1;
+}
+
+.scroll-content {
+    overflow-y: auto;
+    height: 100%;
+}
+
+#todolist-container {
+    width: 600px;
+}
+
 .container-title {
-    color: var(--col-txt-white);
     font-size: 2.5rem;
-    font-weight: 100;
     padding-bottom: 5px;
 }
 
 .todolist {
     list-style-type: none;
     padding-left: 0;
-    overflow: hidden;
 }
 
 .todoitem {
@@ -104,7 +117,6 @@ body {
 .todoitem-left {
     width: 10px;
     background-color: var(--col-blue);
-    overflow: hidden;
     transition-duration: 0.3s;
 }
 
@@ -164,7 +176,7 @@ body {
 }
 
 #todoadd-container {
-    margin-top: 25px;
+    overflow: visible;
 }
 
 #desc-input {
@@ -185,7 +197,7 @@ body {
     position: absolute;
     background-color: var(--col-blue);
     border: none !important;
-    border-radius: 50%;
+    border-radius: 100%;
     right: -35px;
     bottom: -25px;
     width: 55px;
@@ -241,10 +253,7 @@ body {
     display: grid;
     grid-template-columns: min-content 1fr;
     grid-template-rows: auto;
-    height: 800px;
     width: 400px;
-    overflow-y: scroll;
-    scroll-margin: 0;
 }
 
 .schedule-left {

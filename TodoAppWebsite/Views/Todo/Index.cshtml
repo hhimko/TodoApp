@@ -5,20 +5,22 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<div id="dashboard-container">
-    <div id="schedule-container" class="dashboard-item">
-        <div class="container-title"> 
-            scheduled 
+<div id="dashboard">
+    <div class="dashboard-col horizontal-flex">
+        <div id="schedule-container" class="dashboard-item horizontal-flex grow">
+            <div class="container-title"> 
+                scheduled 
+            </div>
+            <div id="schedule-partial" class="scroll-content"> </div>
         </div>
-        <div id="schedule-partial"> </div>
     </div>
 
-    <div>
-        <div id="todolist-container" class="dashboard-item">
+    <div class="dashboard-col horizontal-flex">
+        <div id="todolist-container" class="dashboard-item horizontal-flex grow">
             <div class="container-title">
                 todo 
             </div>
-            <div id="todolist-partial"> </div>
+            <div id="todolist-partial" class="scroll-content"> </div>
         </div>
 
         <div id="popup-add-container">
