@@ -53,13 +53,13 @@ body {
     flex-wrap: wrap;
     justify-content: center;
     gap: 25px;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 5vh;
 }
 
 .dashboard-col {
     gap: 25px;
     height: 90vh;
+    min-height: 500px;
 }
 
 .horizontal-flex {
@@ -71,7 +71,7 @@ body {
     border-radius: 15px;
     padding: 15px 25px;
     background-color: var(--col-bg-light);
-    overflow: hidden;
+    height: 100%;
 }
 
 .grow {
