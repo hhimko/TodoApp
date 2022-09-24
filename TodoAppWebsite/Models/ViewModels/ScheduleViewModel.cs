@@ -6,6 +6,7 @@ public class ScheduleViewModel
     private readonly IDateTimeProvider _dateTimeProvider;
 
     public IEnumerable<IScheduledItem> Items { get; set; }
+    public IEnumerable<TodoItem> TodoItems => Items.Where(x => x is TodoItem).Cast<TodoItem>();
     public IScheduledItem? CurrentyActive { get; set; }
 
 

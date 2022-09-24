@@ -1,14 +1,48 @@
 ﻿@model ScheduleViewModel
 @inject IDateTimeProvider dateTimeProvider
 
+@functions {
+    bool TryGetScheduleItemForTime(int h, int q, out TodoItem? item)
+    {
+        TimeOnly start = new(h, q * 15);
+        TimeOnly end = new(h, (q + 1) * 15 - 1, 59);
+
+        item = Model.TodoItems.Where(x => x.ScheduledTime!.Start.IsBetween(start, end)).SingleOrDefault();
+        return item is not null;
+    }
+}
+
 
 <div class="schedule">
     @for (int h = 0; h < 24; h++)
     {
-        <div class="schedule-left"> @String.Format("{0:00}:00", h) </div>
-        <div class="schedule-right">  </div>
-        <div class="schedule-right">  </div>
-        <div class="schedule-right">  </div>
-        <div class="schedule-right">  </div>
+        <div class="schedule-left">
+            <div> @String.Format("{0:00}:00", h) </div>
+        </div>
+        @for (int q = 0; q < 4; q ++) /* hour quarters */
+        {
+            <div id="s-@h-@q" class="schedule-right"> 
+                @if (TryGetScheduleItemForTime(h, q, out TodoItem? item))
+                {
+                    <div class="schedule-item horizontal-flex" style="--time-span:@Math.Max(item!.ScheduledTime!.Interval.TotalMinutes / 15, 1)">
+                        <div class="vertical-flex grow">
+                            <div class="content grow">
+                                @item!.Description
+                            </div>
+                            <div class="vertical-grab container">
+                                <div class="vertical-grab grabbable" draggable="true"> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grip-vertical" viewBox="0 0 16 16">
+                                      <path d="M7 2a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM7 5a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM7 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="horizontal-grab container">
+                            <div class="horizontal-grab resizable-row" draggable="true"> </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
     }
 </div>

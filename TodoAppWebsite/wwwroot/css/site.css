@@ -67,6 +67,11 @@ body {
     flex-direction: column;
 }
 
+.vertical-flex {
+    display: flex;
+    flex-direction: row;
+}
+
 .dashboard-item {
     border-radius: 15px;
     padding: 15px 25px;
@@ -88,8 +93,7 @@ body {
 }
 
 .container-title {
-    font-size: 2.5rem;
-    padding-bottom: 5px;
+    font-weight: 100;
 }
 
 .todolist {
@@ -234,22 +238,18 @@ body {
 }
 
 .schedule .schedule-right {
-    border: 1px solid;
-    box-sizing: border-box;
-}
-
-.schedule .schedule-right:not(:last-child) {
-    border-bottom-width: 0px;
-}
-
-.schedule-container {
-    position: absolute;
-    background-color: red;
-    width: max-content;
-    height: max-content;
+    border-top: 1px solid;
+    border-image: linear-gradient(
+        to right, 
+        rgb(255, 255, 255, 0.00),
+        var(--col-bg-lightest) 20%,
+        var(--col-bg-lightest) 80%,
+        rgb(255, 255, 255, 0.00) ) 1;
 }
 
 .schedule {
+    margin-top: 0.65rem;
+    padding-right: 10px;
     display: grid;
     grid-template-columns: min-content 1fr;
     grid-template-rows: auto;
@@ -258,12 +258,79 @@ body {
 
 .schedule-left {
     grid-row: span 4;
-    overflow: hidden;
+}
+
+.schedule-left > div {
+    margin-right: 10px;
+    margin-top: -0.65rem;
 }
 
 .schedule-right {
+    position: relative;
     height: var(--schedule-row-height);
+}
+
+.schedule-item {
+    position: absolute;
+    width: 100%;
+    background-color: var(--col-bg-dark);
+    height: calc(var(--schedule-row-height) * var(--time-span, 1) - 1px);
+    border-radius: 15px;
     overflow: hidden;
+}
+
+/* overlay for dimming out border lines */
+.schedule-item::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: var(--col-bg-dark);
+    opacity: 0.7;
+    z-index: 1;
+}
+
+.schedule-item > * {
+    z-index: 1;
+}
+
+.schedule-item .content {
+    padding: 5px 15px;
+}
+
+.vertical-grab.container {
+    display: table;
+    background-color: var(--col-bg-dark);
+    width: min-content;
+    padding: 0;
+}
+
+.vertical-grab.grabbable {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0 2px;
+}
+
+.schedule-item .horizontal-grab {
+    height: 3px;
+}
+
+.horizontal-grab.container {
+    background-color: var(--col-blue);
+}
+
+.grabbable {
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+}
+
+.grabbable:active {
+    cursor: grabbing; 
+}
+
+.resizable-row {
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: row-resize;
 }
 
 
