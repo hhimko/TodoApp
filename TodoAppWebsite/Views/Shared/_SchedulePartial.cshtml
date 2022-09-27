@@ -21,24 +21,24 @@
         </div>
         @for (int q = 0; q < 4; q ++) /* hour quarters */
         {
-            <div id="s-@h-@q" class="schedule-right"> 
+            <div id="s-@h-@q" class="schedule-right">
                 @if (TryGetScheduleItemForTime(h, q, out TodoItem? item))
                 {
-                    <div class="schedule-item horizontal-flex" style="--time-span:@Math.Max(item!.ScheduledTime!.Interval.TotalMinutes / 15, 1)">
-                        <div class="vertical-flex grow">
+                    <div id="@item!.Id" class="schedule-item horizontal-flex" style="--time-span:@Math.Max(item!.ScheduledTime!.Interval.TotalMinutes / 15, 1)">
+                        <div class="vertical-flex grow" style="overflow:hidden">
                             <div class="content grow">
                                 @item!.Description
                             </div>
                             <div class="vertical-grab container">
-                                <div class="vertical-grab grabbable" draggable="true"> 
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grip-vertical" viewBox="0 0 16 16">
+                                <div class="vertical-grab grabbable">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-grip-vertical" viewBox="0 0 15 15">
                                       <path d="M7 2a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM7 5a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM7 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                                     </svg>
                                 </div>
                             </div>
                         </div>
                         <div class="horizontal-grab container">
-                            <div class="horizontal-grab resizable-row" draggable="true"> </div>
+                            <div class="horizontal-grab resizable-row" onmousedown="handleScheduleResizeMouseDown(event)"> </div>
                         </div>
                     </div>
                 }

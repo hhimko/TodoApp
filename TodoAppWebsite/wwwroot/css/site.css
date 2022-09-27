@@ -308,7 +308,11 @@ body {
 .vertical-grab.grabbable {
     display: table-cell;
     vertical-align: middle;
-    padding: 0 2px;
+    padding: 0 3px;
+}
+
+.vertical-grab.grabbable svg {
+    display: table-cell;
 }
 
 .schedule-item .horizontal-grab {
@@ -320,7 +324,7 @@ body {
 }
 
 .grabbable {
-    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: move; /* fallback if cursor is unsupported */
     cursor: grab;
 }
 
@@ -329,7 +333,7 @@ body {
 }
 
 .resizable-row {
-    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: move; /* fallback if cursor is unsupported */
     cursor: row-resize;
 }
 
