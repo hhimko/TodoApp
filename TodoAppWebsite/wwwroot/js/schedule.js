@@ -47,7 +47,7 @@ function getScheduleResizeMaxSpan(scheduleItem) {
     const itemRow = scheduleItem.closest(".schedule-right");
     if (!itemRow)
         throw new Error("Schedule item is missing a parent with class '.schedule-right'");
-    const [h, q] = getScheduleRowTimeFromId(itemRow.id);
+    let [h, q] = getScheduleRowTimeFromId(itemRow.id);
     const itemRowIndex = h * 4 + q;
     const nextItem = document.querySelector(`.schedule-item-${itemIndex + 1}`);
     if (nextItem) {
@@ -58,7 +58,12 @@ function getScheduleResizeMaxSpan(scheduleItem) {
         const nextItemRowIndex = h * 4 + q;
         return nextItemRowIndex - itemRowIndex;
     }
-    return 0;
+    const lastRow = document.querySelector(".schedule .schedule-right:last-child");
+    if (!lastRow)
+        throw new Error("Schedule is missing a child with class '.schedule-right'");
+    [h, q] = getScheduleRowTimeFromId(lastRow.id);
+    const lastRowIndex = h * 4 + q;
+    return lastRowIndex - itemRowIndex;
 }
 function scheduleResize(e) {
     if (!resizeData)

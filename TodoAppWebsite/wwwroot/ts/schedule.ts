@@ -69,7 +69,7 @@ function getScheduleResizeMaxSpan(scheduleItem: HTMLElement): number {
     if (!itemRow)
         throw new Error("Schedule item is missing a parent with class '.schedule-right'")
 
-    const [h, q] = getScheduleRowTimeFromId(itemRow.id)
+    let [h, q] = getScheduleRowTimeFromId(itemRow.id)
     const itemRowIndex = h * 4 + q
 
     const nextItem = document.querySelector(`.schedule-item-${itemIndex + 1}`)
@@ -84,19 +84,15 @@ function getScheduleResizeMaxSpan(scheduleItem: HTMLElement): number {
         return nextItemRowIndex - itemRowIndex
     }
 
-    /*const itemRow = scheduleItem.closest<HTMLElement>(".schedule-right")
-    if (!itemRow)
-        throw new Error("Schedule item is missing a parent with class '.schedule-right'")
+    // resized schedule item is the last one on page
+    const lastRow = document.querySelector(".schedule .schedule-right:last-child")
+    if (!lastRow)
+        throw new Error("Schedule is missing a child with class '.schedule-right'");
 
-    const scheduleItems = Array.from(document.querySelectorAll<HTMLElement>(".schedule-item"))
-    const resizedScheduleItem
+    [h, q] = getScheduleRowTimeFromId(lastRow.id)
+    const lastRowIndex = h * 4 + q
 
-    const scheduleItemsRows = scheduleItems.s(item => item.closest(""))
-    const succeedingItems = Array.from(scheduleItems).filter(item => item.id > rowCurr.id)
-
-    console.log(rowIter)*/
-
-    return 0
+    return lastRowIndex - itemRowIndex
 }
 
 function scheduleResize(e: MouseEvent): void {
