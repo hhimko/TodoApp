@@ -10,6 +10,8 @@
         item = Model.TodoItems.Where(x => x.ScheduledTime!.Start.IsBetween(start, end)).SingleOrDefault();
         return item is not null;
     }
+
+    int scheduleIndex = 0;
 }
 
 
@@ -21,10 +23,10 @@
         </div>
         @for (int q = 0; q < 4; q ++) /* hour quarters */
         {
-            <div id="s-@h-@q" class="schedule-right">
+            <div id="s-@String.Format("{0:00}", h)-@q" class="schedule-right">
                 @if (TryGetScheduleItemForTime(h, q, out TodoItem? item))
                 {
-                    <div id="@item!.Id" class="schedule-item horizontal-flex" style="--time-span:@Math.Max(item!.ScheduledTime!.Interval.TotalMinutes / 15, 1)">
+                    <div id="@item!.Id" class="schedule-item schedule-item-@scheduleIndex horizontal-flex" style="--time-span:@Math.Max(item!.ScheduledTime!.Interval.TotalMinutes / 15, 1)">
                         <div class="vertical-flex grow" style="overflow:hidden">
                             <div class="content grow">
                                 @item!.Description
@@ -41,6 +43,8 @@
                             <div class="horizontal-grab resizable-row" onmousedown="handleScheduleResizeMouseDown(event)"> </div>
                         </div>
                     </div>
+
+                    scheduleIndex++;
                 }
             </div>
         }

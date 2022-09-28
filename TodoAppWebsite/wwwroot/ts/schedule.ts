@@ -8,6 +8,10 @@
 
 var resizeData: ResizeData | null = null
 
+function clamp(value: number, min: number, max: number): number {
+    return Math.max(min, Math.min(max, value))
+}
+
 
 function parseCSSNumericValue(value: string, unit: string): number | null {
     const match = value.match(`(-?\\d+)${unit}`)
@@ -29,15 +33,70 @@ function getScheduleTimeSpan(scheduleItem: HTMLElement): number {
 function getScheduleRowHeight(): number {
     const cssValue = getComputedStyle(document.documentElement).getPropertyValue("--schedule-row-height")
     const rowHeight = parseCSSNumericValue(cssValue, "px")
-    console.log(cssValue)
+
     if (!rowHeight || rowHeight == 0 || isNaN(rowHeight))
         throw new Error("Root element's style was not instatiated with a '--schedule-row-height' value or the value was corrupted")
 
     return rowHeight
 }
 
+function getScheduleRowTimeFromId(value: string): [number, number] {
+    const match = value.match(/s-(\d+)-(\d+)$/)
+    if (match && match.length == 3) {
+        const h = Number(match[1])
+        const q = Number(match[2])
+
+        if (!(Number.isNaN(h) && Number.isNaN(q)))
+            return [h, q]
+    }
+    throw new Error(`Could not retrieve schedule row time from '${value}'`)
+}
+
 function getScheduleResizeMaxSpan(scheduleItem: HTMLElement): number {
-    return 8
+    let itemIndex = -1
+    for (const c of scheduleItem.classList) {
+        const match = c.match(/schedule-item-(\d+)$/)
+        if (match && match.length == 2) {
+            itemIndex = Number(match[1])
+            break
+        }
+    }
+
+    if (itemIndex < 0 || Number.isNaN(itemIndex))
+        throw new Error("Schedule item is missing an indexed '.schedule-item-{index}' class")
+
+    const itemRow = scheduleItem.closest<HTMLElement>(".schedule-right")
+    if (!itemRow)
+        throw new Error("Schedule item is missing a parent with class '.schedule-right'")
+
+    const [h, q] = getScheduleRowTimeFromId(itemRow.id)
+    const itemRowIndex = h * 4 + q
+
+    const nextItem = document.querySelector(`.schedule-item-${itemIndex + 1}`)
+    if (nextItem) {
+        const nextItemRow = nextItem.closest<HTMLElement>(".schedule-right")
+        if (!nextItemRow)
+            throw new Error("Schedule item is missing a parent with class '.schedule-right'")
+
+        const [h, q] = getScheduleRowTimeFromId(nextItemRow.id)
+        const nextItemRowIndex = h * 4 + q
+
+        return nextItemRowIndex - itemRowIndex
+    }
+
+    /*const itemRow = scheduleItem.closest<HTMLElement>(".schedule-right")
+    if (!itemRow)
+        throw new Error("Schedule item is missing a parent with class '.schedule-right'")
+
+    const scheduleItems = Array.from(document.querySelectorAll<HTMLElement>(".schedule-item"))
+    const resizedScheduleItem
+
+    const scheduleItemsRows = scheduleItems.s(item => item.closest(""))
+    const succeedingItems = Array.from(scheduleItems).filter(item => item.id > rowCurr.id)
+
+    console.log(rowIter)*/
+
+    return 0
 }
 
 function scheduleResize(e: MouseEvent): void {
@@ -51,10 +110,8 @@ function scheduleResize(e: MouseEvent): void {
 
     const spanDiff = Math.floor((mouseY - handleY) / rowHeight) + 1
     if (spanDiff != 0) {
-        const spanCurr = spanElem + spanDiff
-
-        if (spanCurr > 0 && spanCurr <= resizeData.maxTimeSpan)
-            resizeData.scheduleItem.style.setProperty("--time-span", spanCurr.toString())
+        const spanCurr = clamp(spanElem + spanDiff, 1, resizeData.maxTimeSpan)
+        resizeData.scheduleItem.style.setProperty("--time-span", spanCurr.toString())
     }
 }
 

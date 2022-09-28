@@ -12,7 +12,8 @@
     --col-purple: #9B3786;
     --col-blue: #286C77;
     --col-blue-hover: #26777F;
-
+    --col-border-light: #494C4C;
+    --col-border-lightest: #63676C;
     --schedule-row-height: 20px;
 }
 
@@ -26,6 +27,10 @@
 ::-webkit-scrollbar-thumb {
     background-color: var(--col-blue);
     border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--col-blue-hover);
 }
 
 html {
@@ -122,6 +127,10 @@ body {
     width: 10px;
     background-color: var(--col-blue);
     transition-duration: 0.3s;
+}
+
+.todoitem-left:hover {
+    background-color: var(--col-blue-hover);
 }
 
 .todoitem:hover .todoitem-left {
@@ -242,8 +251,17 @@ body {
     border-image: linear-gradient(
         to right, 
         rgb(255, 255, 255, 0.00),
-        var(--col-bg-lightest) 20%,
-        var(--col-bg-lightest) 80%,
+        var(--col-border-light) 20%,
+        var(--col-border-light) 80%,
+        rgb(255, 255, 255, 0.00) ) 1;
+}
+
+.schedule .schedule-right:nth-child(5n - 3){
+    border-image: linear-gradient(
+        to right, 
+        rgb(255, 255, 255, 0.00),
+        var(--col-border-lightest) 20%,
+        var(--col-border-lightest) 80%,
         rgb(255, 255, 255, 0.00) ) 1;
 }
 
@@ -273,10 +291,11 @@ body {
 .schedule-item {
     position: absolute;
     width: 100%;
-    background-color: var(--col-bg-dark);
-    height: calc(var(--schedule-row-height) * var(--time-span, 1) - 1px);
+    height: calc(var(--schedule-row-height) * var(--time-span, 1) - 3px);
+    top: 1px;
     border-radius: 15px;
     overflow: hidden;
+    background-color: var(--col-bg-dark);
 }
 
 /* overlay for dimming out border lines */
@@ -316,11 +335,15 @@ body {
 }
 
 .schedule-item .horizontal-grab {
-    height: 3px;
+    height: 5px;
 }
 
 .horizontal-grab.container {
     background-color: var(--col-blue);
+}
+
+.horizontal-grab.container:hover {
+    background-color: var(--col-blue-hover);
 }
 
 .grabbable {
