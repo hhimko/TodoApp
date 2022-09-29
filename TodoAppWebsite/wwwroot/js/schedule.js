@@ -17,7 +17,10 @@ function getScheduleTimeSpan(scheduleItem) {
     return timeSpan;
 }
 function getScheduleRowHeight() {
-    const cssValue = getComputedStyle(document.documentElement).getPropertyValue("--schedule-row-height");
+    const scheduleRow = document.querySelector(".schedule .schedule-right");
+    if (!scheduleRow)
+        throw new Error("Schedule is missing an element with class '.schedule-right'");
+    const cssValue = getComputedStyle(scheduleRow).getPropertyValue("height");
     const rowHeight = parseCSSNumericValue(cssValue, "px");
     if (!rowHeight || rowHeight == 0 || isNaN(rowHeight))
         throw new Error("Root element's style was not instatiated with a '--schedule-row-height' value or the value was corrupted");
@@ -79,8 +82,12 @@ function scheduleResize(e) {
     }
 }
 function scheduleResizeFinalize(e) {
-    if (e.target && e.target instanceof HTMLElement) {
-        if (resizeData && e.target.closest(".schedule")) {
+    if (resizeData) {
+        if (e.target && e.target instanceof HTMLElement && e.target.closest(".schedule")) {
+        }
+        else {
+            const initTimeSpan = resizeData.initTimeSpan.toString();
+            resizeData.scheduleItem.style.setProperty("--time-span", initTimeSpan);
         }
     }
     resizeData = null;

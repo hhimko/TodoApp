@@ -31,7 +31,11 @@ function getScheduleTimeSpan(scheduleItem: HTMLElement): number {
 }
 
 function getScheduleRowHeight(): number {
-    const cssValue = getComputedStyle(document.documentElement).getPropertyValue("--schedule-row-height")
+    const scheduleRow = document.querySelector(".schedule .schedule-right")
+    if (!scheduleRow)
+        throw new Error("Schedule is missing an element with class '.schedule-right'")
+
+    const cssValue = getComputedStyle(scheduleRow).getPropertyValue("height")
     const rowHeight = parseCSSNumericValue(cssValue, "px")
 
     if (!rowHeight || rowHeight == 0 || isNaN(rowHeight))
@@ -112,12 +116,16 @@ function scheduleResize(e: MouseEvent): void {
 }
 
 function scheduleResizeFinalize(e: MouseEvent): void {
-    if (e.target && e.target instanceof HTMLElement) {
-        if (resizeData && e.target.closest(".schedule")) {
+    if (resizeData) {
+        if (e.target && e.target instanceof HTMLElement && e.target.closest(".schedule")) {
             // apply changes
         }
+        else {
+            const initTimeSpan = resizeData.initTimeSpan.toString()
+            resizeData.scheduleItem.style.setProperty("--time-span", initTimeSpan)
+        }
     }
-
+    
     resizeData = null
     window.removeEventListener("mousemove", scheduleResize)
     window.removeEventListener("mouseup", scheduleResizeFinalize)

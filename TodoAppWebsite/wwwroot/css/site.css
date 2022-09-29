@@ -14,7 +14,7 @@
     --col-blue-hover: #26777F;
     --col-border-light: #494C4C;
     --col-border-lightest: #63676C;
-    --schedule-row-height: 20px;
+    --schedule-row-height: 2rem;
 }
 
 ::-webkit-scrollbar {
